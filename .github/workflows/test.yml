@@ -1,17 +1,23 @@
-name: Run Python Tests
+name: Python Tests with Pytest
 
-on: [push]
+on: [push, pull_request]  # Se activa en push o PR
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: "3.10"
+
       - name: Install dependencies
-        run: pip install pytest
+        run: |
+          pip install pytest
+          pip install -e .  # Instala el proyecto en modo editable (si tiene setup.py)
+
       - name: Run tests
-        run: python -m pytest
+        run: pytest tests/ -v  # Ejecuta pruebas con verbosidad

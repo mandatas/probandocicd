@@ -1,6 +1,6 @@
 name: Python Tests with Pytest
 
-on: [push, pull_request]  # Se activa en push o PR
+on: [push, pull_request]
 
 jobs:
   test:
@@ -9,6 +9,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: List files in runner (before setup)
+        run: |
+          echo "Contenido del runner ANTES de instalar dependencias:"
+          ls -R
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
@@ -16,9 +21,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt  # Instala pytest desde requirements.txt
+          pip install -r requirements.txt
+
+      - name: List files in runner (after setup)
+        run: |
+          echo "Contenido del runner DESPUÉS de instalar dependencias:"
+          ls -R
 
       - name: Run tests
         run: |
-          export PYTHONPATH="${PYTHONPATH}:${GITHUB_WORKSPACE}"  # ¡Clave!
+          export PYTHONPATH="${PYTHONPATH}:${GITHUB_WORKSPACE}"
           pytest tests/ -v

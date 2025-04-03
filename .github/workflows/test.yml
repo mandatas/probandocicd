@@ -16,8 +16,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          export PYTHONPATH=$PYTHONPATH:${{ github.workspace }}
-          pytest tests/ -v
+          pip install -r requirements.txt  # Instala pytest desde requirements.txt
 
       - name: Run tests
         run: pytest tests/ -v  # Ejecuta pruebas con verbosidad
